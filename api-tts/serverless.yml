@@ -18,4 +18,10 @@ functions:
       - httpApi:
           path: /v1
           method: get
+  text_to_speech:
+    handler: handler.text_to_speech
+    events:
+     - httpApi:
+          path: /v1/tts
+          method: post
 

@@ -25,3 +25,5 @@ def v1_description(event, context):
     response = {"statusCode": 200, "body": json.dumps(body)}
 
     return response
+
+def text_to_speech(event, context):
