@@ -67,3 +67,13 @@ def save_to_dynamodb(phrase, unique_id, audio_url):
             'created_audio': datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         }
     )
+
+# Função para obter dados do DynamoDB
+def get_from_dynamodb(unique_id):
+    response = table.get_item(
+        Key={
+            'unique_id': unique_id
+        }
+    )
+
+    return response.get('Item')
