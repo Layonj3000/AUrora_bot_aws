@@ -52,6 +52,38 @@ def text_to_speech(event, context):
         # Gera um ID único para a frase
         unique_id = generate_unique_id(phrase)
 
+        # Verifica se a frase já foi processada anteriormente
+        existing_item = get_from_dynamodb(unique_id)
+
+        if existing_item:
+            # Se a frase já existe, retorna os dados existentes
+            return {
+                "statusCode": 200,
+                "body": json.dumps({
+                    "received_phrase": existing_item['received_phrase'],
+                    "url_to_audio": existing_item['url_to_audio'],
+                    "created_audio": existing_item['created_audio'],
+                    "unique_id": unique_id
+                }, indent=4)
+            }
+        else:
+            # Gera o áudio e armazena no S3
+            audio_url = generate_audio_and_store_in_s3(phrase, unique_id)
+
+            # Salva os dados no DynamoDB
+            save_to_dynamodb(phrase, unique_id, audio_url)
+
+            # Retorna a resposta com os dados recém-criados
+            return {
+                "statusCode": 200,
+                "body": json.dumps({
+                    "received_phrase": phrase,
+                    "url_to_audio": audio_url,
+                    "created_audio": datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S'),
+                    "unique_id": unique_id
+                }, indent=4)
+            }
+
 # Função para gerar um ID único para a frase
 def generate_unique_id(phrase):
     hash_object = hashlib.sha256(phrase.encode())
