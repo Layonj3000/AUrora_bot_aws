@@ -30,7 +30,7 @@ def v1_description(event, context):
     return response
 
 def text_to_speech(event, context):
-   try:
+    try:
         if 'body' in event:
             # Faz o parse do corpo da requisição JSON
             body = json.loads(event['body'])
@@ -83,6 +83,15 @@ def text_to_speech(event, context):
                     "unique_id": unique_id
                 }, indent=4)
             }
+    except Exception as e:
+        # Loga o erro e retorna uma resposta de erro interno    
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "message": "Internal Server Error",
+                "error": str(e)
+            })
+        }
 
 # Função para gerar um ID único para a frase
 def generate_unique_id(phrase):
