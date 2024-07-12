@@ -4,7 +4,17 @@ frameworkVersion: '4.1.11'
 provider:
   name: aws
   runtime: python3.9
+  region: us-east-1
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource: arn:aws:dynamodb:us-east-1:"Id da conta":table/"Nome da tabela DynamoDB"
+  
 functions:
   health:
     handler: handler.health
