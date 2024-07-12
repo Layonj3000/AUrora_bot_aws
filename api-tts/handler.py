@@ -27,3 +27,12 @@ def v1_description(event, context):
     return response
 
 def text_to_speech(event, context):
+   try:
+        if 'body' in event:
+            # Faz o parse do corpo da requisição JSON
+            body = json.loads(event['body'])
+        else:
+            body = {}
+
+        # Obtém a frase da requisição
+        phrase = body.get('phrase')
