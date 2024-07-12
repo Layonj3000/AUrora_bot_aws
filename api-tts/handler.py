@@ -6,6 +6,7 @@ import datetime
 # Inicializa a sessão boto3 e cria recursos para DynamoDB, Polly e S3
 session = boto3.Session()
 dynamodb = session.resource('dynamodb')
+table = dynamodb.Table('Nomedasuatabela')
 polly = session.client('polly')
 s3 = session.client('s3')
 
@@ -56,3 +57,13 @@ def generate_unique_id(phrase):
     hash_object = hashlib.sha256(phrase.encode())
     return hash_object.hexdigest()[:6]
 
+# Função para salvar dados no DynamoDB
+def save_to_dynamodb(phrase, unique_id, audio_url):
+    table.put_item(
+        Item={
+            'unique_id': unique_id,
+            'received_phrase': phrase,
+            'url_to_audio': audio_url,
+            'created_audio': datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+        }
+    )
