@@ -45,3 +45,11 @@ def text_to_speech(event, context):
                     "error": "Frase não fornecida"
                 })
             }
+        
+        # Gera um ID único para a frase
+        unique_id = generate_unique_id(phrase)
+
+# Função para gerar um ID único para a frase
+def generate_unique_id(phrase):
+    hash_object = hashlib.sha256(phrase.encode())
+    return hash_object.hexdigest()[:6]
