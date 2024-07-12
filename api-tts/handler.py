@@ -36,3 +36,12 @@ def text_to_speech(event, context):
 
         # Obtém a frase da requisição
         phrase = body.get('phrase')
+
+        if not phrase:
+            # Retorna um erro se a frase não for fornecida
+            return {
+                "statusCode": 400,
+                "body": json.dumps({
+                    "error": "Frase não fornecida"
+                })
+            }
