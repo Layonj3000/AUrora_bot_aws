@@ -1,5 +1,6 @@
 import json
 import boto3
+import hashlib
 
 # Inicializa a sessão boto3 e cria recursos para DynamoDB, Polly e S3
 session = boto3.Session()
