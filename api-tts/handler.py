@@ -1,6 +1,7 @@
 import json
 import boto3
 import hashlib
+import datetime
 
 # Inicializa a sessão boto3 e cria recursos para DynamoDB, Polly e S3
 session = boto3.Session()
@@ -54,3 +55,4 @@ def text_to_speech(event, context):
 def generate_unique_id(phrase):
     hash_object = hashlib.sha256(phrase.encode())
     return hash_object.hexdigest()[:6]
+
