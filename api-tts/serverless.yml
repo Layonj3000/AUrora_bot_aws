@@ -14,7 +14,11 @@ provider:
             - dynamodb:GetItem
             - dynamodb:PutItem
           Resource: arn:aws:dynamodb:us-east-1:"Id da conta":table/"Nome da tabela DynamoDB"
-  
+          - Effect: Allow
+          Action:
+            - s3:PutObject
+          Resource: arn:aws:s3:::nomedobucket/*
+
 functions:
   health:
     handler: handler.health
