@@ -1,5 +1,11 @@
 import json
+import boto3
 
+# Inicializa a sessão boto3 e cria recursos para DynamoDB, Polly e S3
+session = boto3.Session()
+dynamodb = session.resource('dynamodb')
+polly = session.client('polly')
+s3 = session.client('s3')
 
 def health(event, context):
     body = {
