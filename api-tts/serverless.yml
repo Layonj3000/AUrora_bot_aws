@@ -18,6 +18,10 @@ provider:
           Action:
             - s3:PutObject
           Resource: arn:aws:s3:::nomedobucket/*
+                  - Effect: Allow
+          Action:
+            - polly:SynthesizeSpeech
+          Resource: "*"
 
 functions:
   health:
