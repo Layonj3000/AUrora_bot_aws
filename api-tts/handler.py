@@ -57,6 +57,19 @@ def generate_unique_id(phrase):
     hash_object = hashlib.sha256(phrase.encode())
     return hash_object.hexdigest()[:6]
 
+# Função para gerar áudio e armazenar no S3
+def generate_audio_and_store_in_s3(phrase, unique_id):
+    response = polly.synthesize_speech(
+        Text=phrase,
+        OutputFormat='mp3',
+        VoiceId='Camila'
+    )
+
+    audio_key = f'audio-{unique_id}.mp3'
+    s3.put_object(Bucket='nomedobucket', Key=audio_key, Body=response['AudioStream'].read())
+
+    return f'https://nomedobucket.s3.amazonaws.com/{audio_key}'
+
 # Função para salvar dados no DynamoDB
 def save_to_dynamodb(phrase, unique_id, audio_url):
     table.put_item(
