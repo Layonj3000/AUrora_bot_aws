@@ -1,5 +1,5 @@
 service: api-tts
-frameworkVersion: '4.1.11'
+frameworkVersion: "4.1.11"
 
 provider:
   name: aws
@@ -14,11 +14,11 @@ provider:
             - dynamodb:GetItem
             - dynamodb:PutItem
           Resource: arn:aws:dynamodb:us-east-1:"Id da conta":table/"Nome da tabela DynamoDB"
-          - Effect: Allow
+        - Effect: Allow
           Action:
             - s3:PutObject
           Resource: arn:aws:s3:::nomedobucket/*
-                  - Effect: Allow
+        - Effect: Allow
           Action:
             - polly:SynthesizeSpeech
           Resource: "*"
@@ -41,22 +41,22 @@ functions:
   text_to_speech:
     handler: handler.text_to_speech
     events:
-     - httpApi:
+      - httpApi:
           path: /v1/tts
           method: post
 
-  resources:
-    Resources:
-      TTSTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-          TableName: ttsTable
-          AttributeDefinitions:
-            - AttributeName: unique_id
-              AttributeType: S
-          KeySchema:
-            - AttributeName: unique_id
-              KeyType: HASH
-          ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
+resources:
+  Resources:
+    TTSTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ttsTable
+        AttributeDefinitions:
+          - AttributeName: unique_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: unique_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
