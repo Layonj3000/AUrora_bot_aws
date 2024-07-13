@@ -1,15 +1,12 @@
-import json
-import boto3
-import hashlib
 import datetime
+import json
 
-# Inicializa a sessão boto3 e cria recursos para DynamoDB, Polly e S3
-session = boto3.Session()
-dynamodb = session.resource('dynamodb')
-table = dynamodb.Table('Nomedasuatabela')
-polly = session.client('polly')
-s3 = session.client('s3')
+from dynamodb_operations import get_from_dynamodb, save_to_dynamodb
+from polly_operations import generate_audio_and_store_in_s3
+from utils import generate_unique_id
 
+
+# Função de verificação de saúde da API
 def health(event, context):
     body = {
         "message": "Go Serverless v3.0! Your function executed successfully!",
@@ -17,20 +14,21 @@ def health(event, context):
     }
 
     response = {"statusCode": 200, "body": json.dumps(body)}
-
     return response
 
+# Função para descrição da versão da API
 def v1_description(event, context):
     body = {
         "message": "TTS api version 1."
     }
 
     response = {"statusCode": 200, "body": json.dumps(body)}
-
     return response
 
+# Função para processar a conversão de texto para fala
 def text_to_speech(event, context):
     try:
+
         if 'body' in event:
             # Faz o parse do corpo da requisição JSON
             body = json.loads(event['body'])
@@ -48,10 +46,10 @@ def text_to_speech(event, context):
                     "error": "Frase não fornecida"
                 })
             }
-        
+
         # Gera um ID único para a frase
         unique_id = generate_unique_id(phrase)
-
+        
         # Verifica se a frase já foi processada anteriormente
         existing_item = get_from_dynamodb(unique_id)
 
@@ -84,7 +82,6 @@ def text_to_speech(event, context):
                 }, indent=4)
             }
     except Exception as e:
-        # Loga o erro e retorna uma resposta de erro interno    
         return {
             "statusCode": 500,
             "body": json.dumps({
@@ -92,42 +89,3 @@ def text_to_speech(event, context):
                 "error": str(e)
             })
         }
-
-# Função para gerar um ID único para a frase
-def generate_unique_id(phrase):
-    hash_object = hashlib.sha256(phrase.encode())
-    return hash_object.hexdigest()[:6]
-
-# Função para gerar áudio e armazenar no S3
-def generate_audio_and_store_in_s3(phrase, unique_id):
-    response = polly.synthesize_speech(
-        Text=phrase,
-        OutputFormat='mp3',
-        VoiceId='Camila'
-    )
-
-    audio_key = f'audio-{unique_id}.mp3'
-    s3.put_object(Bucket='nomedobucket', Key=audio_key, Body=response['AudioStream'].read())
-
-    return f'https://nomedobucket.s3.amazonaws.com/{audio_key}'
-
-# Função para salvar dados no DynamoDB
-def save_to_dynamodb(phrase, unique_id, audio_url):
-    table.put_item(
-        Item={
-            'unique_id': unique_id,
-            'received_phrase': phrase,
-            'url_to_audio': audio_url,
-            'created_audio': datetime.datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-        }
-    )
-
-# Função para obter dados do DynamoDB
-def get_from_dynamodb(unique_id):
-    response = table.get_item(
-        Key={
-            'unique_id': unique_id
-        }
-    )
-
-    return response.get('Item')
