@@ -1,6 +1,6 @@
 <h1 align="center">Desenvolvimento de Soluções AWS para Conversão de Texto em Áudio e Criação de um Chatbot</h1>
 
-<h2 align="center"><i>Conheça a AUrora, assistente virtual da Clínica Veterinária AUmigo</i></h2>
+<h2 align="center"><i>Conheça a AUrora, Assistente Virtual da Clínica Veterinária AUmigo</i></h2>
 
 ![Imagem|Compass](assets/compass.png)
 
@@ -9,7 +9,7 @@
 - [Objetivo](#-objetivo)
 - [Descrição](#-descrição)
 - [Acesse o Chatbot](#-acesse-o-chatbot-pelo-link)
-- [Como Utilizar o Código](#-como-utilizar-o-código)
+- [Como Utilizar o Código](#-link-acesse-o-chatbot-pelo-link)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Arquitetura do Projeto](#️-arquitetura-do-projeto)
@@ -18,10 +18,10 @@
 - [Autores](#-autores)
 
 ## 🎯 Objetivo
-    Desenvolver um endpoint para conversão de texto em áudio e criar um chatbot, que deve ter a opção de enviar a resposta em áudio, utilizando o texto de resposta do chatbot, com uso da API.
+   <p style="text-align: justify;"> Desenvolver um endpoint para conversão de texto em áudio e criar um chatbot, que deve ter a opção de enviar a resposta em áudio, utilizando o texto de resposta do chatbot, com uso da API. </p>
 
 ## 📖 Descrição
-    O chatbot em questão se chama Aurora e foi desenvolvido para a clínica veterinária AUmigo. 
+   <p style="text-align: justify;"> O chatbot em questão se chama Aurora e foi desenvolvido para a clínica veterinária AUmigo. </p>
     Este projeto consistiu em duas partes principais:
 
 1. **Endpoint para Conversão de Texto em Áudio (/v1/tts)**
@@ -36,7 +36,7 @@
     - Utiliza response cards para interatividade e possui tratamento de fallback para erros.
     - Pode enviar respostas em áudio utilizando o endpoint /v1/tts.
 
-## **Acesse o ChatBot pelo link**
+## :link: Acesse o ChatBot pelo link
 
 ## 🚀 Como Utilizar o Código
 
@@ -57,7 +57,7 @@
 
 
 ## 📂 Estrutura do Projeto
-
+```
 ├── 📁 api-tts
 │       ├── dynamodb_operations.py
 │       ├── handler.py
@@ -75,6 +75,7 @@
         │       └── setup_aurora_bd.py
         ├── .env.example
         └── Aurora-DRAFT.zip
+```
 
 
 ## 💻 Tecnologias Utilizadas
