@@ -5,8 +5,10 @@ from mysql.connector import errorcode
 from dotenv import load_dotenv
 import os
 
-# Carregar variáveis do arquivo .env
-load_dotenv()
+# Carregar variáveis do arquivo .env localizado em uma pasta anterior
+from pathlib import Path
+env_path = Path('../.env')
+load_dotenv(dotenv_path=env_path)
 
 RDS_HOST = os.getenv('RDS_HOST')
 RDS_USER = os.getenv('RDS_USER')
