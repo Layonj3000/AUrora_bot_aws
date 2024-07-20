@@ -40,20 +40,41 @@
 
 ## 🚀 Como Utilizar o Código
 
-1. **Configuração do Ambiente**
+1. Pré-requisitos:
+
+    - Python
+ 
+2. Clone o repositório:
+
+    ```bash
+    git clone -b grupo-6 https://github.com/Compass-pb-aws-2024-ABRIL/sprints-6-7-pb-aws-abril.git
+    cd sprints-6-7-pb-aws-abril
+    ```
+3. Para rodar:
+
+    - Instale as bibliotecas necessárias:
+
+    <br>
+    
+    ```bash
+    pip install -r requirements.txt
+    ```
+
     - Instale as dependências necessárias:
+    <br>
         ```bash
         pip install boto3 flask
         ```
     - Configure a AWS CLI com suas credenciais.
     - Adicione um arquivo .env conforme o .env.example
 
-2. **Ações na AWS**
+4. **Ações na AWS**
     - Crie uma tabela no DynamoDB com a chave primária `unique_id`.
     - Crie um bucket no S3 e configure as permissões para ser público.
-    - Crie uma função lambda
+    - Crie uma função lambda e adicione o código
     - Import o bot no Amazon Lex
-    -      
+
+5. **Slack**
 
 
 ## 📂 Estrutura do Projeto
@@ -71,8 +92,11 @@
 │
 └── 📁 chatbot
         ├── 📁 lambda
-        │       ├── script
-        │       └── setup_aurora_bd.py
+        │         ├──
+        │         ├──
+        │         └──
+        ├── 📁 scripts
+        │         └── setup_aurora_bd.py
         ├── .env.example
         └── Aurora-DRAFT.zip
 ```
@@ -80,25 +104,18 @@
 
 ## 💻 Tecnologias Utilizadas
 
-- AWS Polly
-- AWS S3
-- AWS DynamoDB
-- Amazon Lex V2
-- Slack
-- MySQL
-- Flask
-- Python (Boto3)
-- Kanban
+`AWS Polly` `AWS S3` `AWS DynamoDB` `Amazon Lex V2` `Slack` `MySQL` `Flask` `Python (Boto3)` `Kanban`
 
 ## 🏗️ Arquitetura do Projeto
 
-![Imagem|Diagrama](assets/sprint6-7.jpg)
+<img src="assets/sprint6-7.jpg" alt="Imagem|Diagrama" width="80%">
 
 ## 🛠️ Dificuldades
 
-1. <p style="text-align: justify;"> </p>
-2. <p style="text-align: justify;"> </p>
-3. <p style="text-align: justify;"> </p>
+1. <p style="text-align: justify;">Tivemos dificuldades significativas ao tentar utilizar o chatbot com a conexão web. Após várias tentativas e ajustes sem sucesso, decidimos migrar a integração para o Slack.</p>
+
+2. <p style="text-align: justify;">A integração da API de voz no Lambda apresentou diversos desafios técnicos. Tivemos que garantir que todas as dependências fossem corretamente configuradas e que o ambiente estivesse preparado para lidar com solicitações de voz, o que exigiu uma série de testes e ajustes.</p>
+
 
 ## 🙏 Agradecimentos
 
