@@ -92,7 +92,7 @@
 
 ## 🏗️ Arquitetura do Projeto
 
-![Imagem|Diagrama](assets/sprints6-7.jpg)
+![Imagem|Diagrama](assets/sprint6-7.jpg)
 
 ## 🛠️ Dificuldades
 
