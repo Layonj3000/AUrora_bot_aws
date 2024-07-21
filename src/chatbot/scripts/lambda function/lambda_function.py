@@ -116,7 +116,34 @@ def lambda_handler(event, context):
     
 
 
+    def fetch_appointments(data):
+        print("fetch_appointments with data:", data)
+        try:
+            connection = pymysql.connect(**db_config)
+            with connection.cursor() as cursor:
+                # Buscar consultas do cliente
+                query = '''
+                SELECT appointments.appointment_id, pets.pet_id, pets.name_pet, appointments.appointment_date 
+                FROM appointments 
+                JOIN pets ON appointments.pet_id = pets.pet_id 
+                WHERE appointments.customer_email = %s
+                '''
+                cursor.execute(query, (data['email'],))
+                appointments = cursor.fetchall()
+                print("Resultados da consulta:", appointments)
     
+            connection.commit()
+            print("Consulta realizada com sucesso")
+        except pymysql.MySQLError as e:
+            print(f"Erro ao buscar consultas no banco de dados: {str(e)}")
+            return {
+                'statusCode': 500,
+                'body': json.dumps(f"Erro ao buscar consultas no banco de dados: {str(e)}")
+            }
+        finally:
+            if connection:
+                connection.close()
+                print("Conexão fechada")
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
