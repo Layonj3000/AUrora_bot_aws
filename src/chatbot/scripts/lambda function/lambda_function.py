@@ -42,6 +42,24 @@ def lambda_handler(event, context):
             }
         }
     
+        def close(intent_request, fulfillment_state, message):
+        print("close called with message:", message)
+        return {
+            'sessionState': {
+                'dialogAction': {
+                    'type': 'Close'
+                },
+                'intent': {
+                    'name': intent_request['sessionState']['intent']['name'],
+                    'state': fulfillment_state
+                }
+            },
+            'messages': [{
+                'contentType': 'PlainText',
+                'content': message
+            }]
+        }
+    
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
