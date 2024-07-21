@@ -261,11 +261,7 @@ def lambda_handler(event, context):
                 return delegate(event)
             
         if intent_name == 'BuscarConsulta':
-            if event['invocationSource'] == 'DialogCodeHook':
-                if not slots['email'] or not slots['email'].get('value'):
-                    return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', 'Por favor, forneça seu email.')
-                return delegate(event)
-
+   
             if event['invocationSource'] == 'FulfillmentCodeHook':
                 data = {
                     'email': slots['email']['value']['interpretedValue']
@@ -280,7 +276,7 @@ def lambda_handler(event, context):
                     print("Email inválido:", email_novo)
 
                     return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f'Insira um email válido.')
-                    
+                
                 response = fetch_appointments(data)
                 if response['statusCode'] == 200:
                     message = json.loads(response['body'])
@@ -290,6 +286,8 @@ def lambda_handler(event, context):
                 else:
                     return close(event, 'Failed', 'Erro ao buscar as consultas no banco de dados.')
 
+            else:
+                return delegate(event)
         if intent_name == 'CancelarConsulta':
                 print("CancelarConsulta")
 
