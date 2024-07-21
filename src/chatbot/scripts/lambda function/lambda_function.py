@@ -224,6 +224,10 @@ def lambda_handler(event, context):
             pattern = r'<mailto:(.*?\|)(.*?)>'
             result = re.sub(pattern, r'\2', text)
             return result
+        
+        def is_valid_email(email):
+            pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+            return re.match(pattern, email) is not None
 
     except Exception as e:
         print(f"Erro geral no Lambda: {str(e)}")
