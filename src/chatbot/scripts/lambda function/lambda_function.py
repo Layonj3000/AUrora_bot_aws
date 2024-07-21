@@ -98,6 +98,25 @@ def lambda_handler(event, context):
                 appointment_datetime = f"{data['data']} {data['horario']}"
                 cursor.execute(appointment_query, (pet_id, data['email'], appointment_datetime, pet_id, data['email'], appointment_datetime))
 
+            connection.commit()
+
+        except pymysql.MySQLError as e:
+            print(f"Erro ao inserir no banco de dados: {str(e)}")
+            return {
+                'statusCode': 500,
+                'body': json.dumps(f"Erro ao inserir no banco de dados: {str(e)}")
+            }
+        finally:
+            connection.close()
+        print("inserido")
+        return {
+            'statusCode': 200,
+            'body': json.dumps("Dados inseridos com sucesso")
+        }
+    
+
+
+    
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
