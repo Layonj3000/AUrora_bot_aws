@@ -290,13 +290,40 @@ def lambda_handler(event, context):
                 else:
                     return close(event, 'Failed', 'Erro ao buscar as consultas no banco de dados.')
 
-            
+        if intent_name == 'CancelarConsulta':
+                print("CancelarConsulta")
+
+                if event['invocationSource'] == 'FulfillmentCodeHook':
+                    data = {
+                        'email': slots['email']['value']['interpretedValue'],
+                        'pet_id': slots['pet_id']['value']['interpretedValue'],
+                        'appointment_id': slots['appointment_id']['value']['interpretedValue']
+                    }
+                    
+                    email_novo = remove_mailto(data['email'])
+                    
+                    if is_valid_email(email_novo):
+                        print("Email validado:", email_novo)
+                        data['email'] = email_novo
+                    else:
+                        print("Email inválido:", email_novo)
+                        return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f'Insira um email válido.')
+                        
+                    
+                    response = cancel_appointment(data)
+                    if response['statusCode'] == 200:
+                        return close(event, 'Fulfilled', 'Consulta cancelada com sucesso')
+                    elif response['statusCode'] == 404:
+                        return close(event, 'Failed', 'Consulta não encontrada.')
+                    else:
+                        return close(event, 'Failed', 'Erro ao cancelar a consulta no banco de dados.')
+                else:
+                    return delegate(event)
+                
+        return close(event, 'Failed', 'Erro ao processar a intenção.')
+                
     except Exception as e:
         print(f"Erro geral no Lambda: {str(e)}")
         return close(event, 'Failed', f"Erro ao processar a intenção: {str(e)}")
     
     
-    return {
-            'statusCode': 200,
-            'body': json.dumps("Hello from Lambda")
-        }
