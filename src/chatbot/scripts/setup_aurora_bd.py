@@ -10,9 +10,9 @@ from pathlib import Path
 env_path = Path('../.env')
 load_dotenv(dotenv_path=env_path)
 
-RDS_HOST = os.getenv('RDS_HOST')
-RDS_USER = os.getenv('RDS_USER')
-RDS_PASSWORD = os.getenv('RDS_PASSWORD')
+RDS_HOST = os.getenv('HOST')
+RDS_USER = os.getenv('USER')
+RDS_PASSWORD = os.getenv('PASSWORD')
 
 # Função para criar a conexão com o banco de dados MySQL
 def create_connection(database=None):
