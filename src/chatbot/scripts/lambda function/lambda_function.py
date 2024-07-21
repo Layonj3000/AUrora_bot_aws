@@ -209,7 +209,21 @@ def lambda_handler(event, context):
             }
         finally:
             connection.close()
+    
+    
+    
+    
+    try:
+        intent_name = event['sessionState']['intent']['name']
+        slots = event['sessionState']['intent']['slots']
+        print("Intent name:", intent_name)
+        print("Slots:", json.dumps(slots))
 
+    except Exception as e:
+        print(f"Erro geral no Lambda: {str(e)}")
+        return close(event, 'Failed', f"Erro ao processar a intenção: {str(e)}")
+    
+    
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
