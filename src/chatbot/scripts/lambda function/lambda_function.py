@@ -59,7 +59,19 @@ def lambda_handler(event, context):
                 'content': message
             }]
         }
-    
+    def insert_into_db(data):
+        print("insert_into_db with data:", data)
+        try:
+            connection = pymysql.connect(**db_config)
+            with connection.cursor() as cursor:
+                # Inserir na tabela customers
+                customer_query = '''
+                INSERT INTO customers (email, first_name, phone) 
+                VALUES (%s, %s, %s) 
+                ON DUPLICATE KEY UPDATE first_name=%s, phone=%s
+                '''
+                cursor.execute(customer_query, (data['email'], data['nome'], data['celular'], data['nome'], data['celular']))
+        
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
