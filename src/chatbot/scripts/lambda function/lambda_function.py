@@ -1,6 +1,7 @@
-import pymysql
 import json
 import re
+
+import pymysql
 
 # Configurações do banco de dados
 db_config = {
@@ -218,6 +219,11 @@ def lambda_handler(event, context):
         slots = event['sessionState']['intent']['slots']
         print("Intent name:", intent_name)
         print("Slots:", json.dumps(slots))
+
+        def remove_mailto(text):
+            pattern = r'<mailto:(.*?\|)(.*?)>'
+            result = re.sub(pattern, r'\2', text)
+            return result
 
     except Exception as e:
         print(f"Erro geral no Lambda: {str(e)}")
