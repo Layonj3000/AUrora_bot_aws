@@ -8,7 +8,7 @@
 
 - [Objetivo](#-objetivo)
 - [Descrição](#-descrição)
-- [Acesse o Chatbot](#-acesse-o-chatbot-pelo-link)
+- [Como Utilizar o Chatbot](#robot-como-utilizar-o-chatbot)
 - [Como Utilizar o Código](#-link-acesse-o-chatbot-pelo-link)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
@@ -21,7 +21,7 @@
    <p style="text-align: justify;"> Desenvolver um endpoint para conversão de texto em áudio e criar um chatbot, que deve ter a opção de enviar a resposta em áudio, utilizando o texto de resposta do chatbot, com uso da API. </p>
 
 ## 📖 Descrição
-   <p style="text-align: justify;"> O chatbot em questão se chama Aurora e foi desenvolvido para a clínica veterinária AUmigo. </p>
+   <p style="text-align: justify;"> O chatbot desenvolvido se chama Aurora e foi programado para a clínica veterinária AUmigo. </p>
     Este projeto consistiu em duas partes principais:
 
 1. **Endpoint para Conversão de Texto em Áudio (/v1/tts)**
@@ -39,14 +39,14 @@
 ## :robot: Como Utilizar o Chatbot
 
 - Acesse o link: :link: [Chatbot Aurora](https://www.dicionarioinformal.com.br/xeretar/);
-- Inicie a conversa com a Aurora com "oi" ou palavras semelhantes;
-- Selecione o serviço desejado (`Agendar Consulta` `Buscar Consulta` `Cancelar Consulta` `Localização e Horário`);
-    - Ao selecionar `Agendar Consulta`, você pode agendar uma consulta. Nesta intent será solicitada `Seu Nome` `E-mail` `Telefone` `Nome do Pet` `Espécie do Pet`
-    - Ao selecionar `Buscar Consulta`, você pode buscar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
-    - Ao selecionar `Cancelar Consulta`, você pode cancelar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
-    - Ao selecionar `Localização e Horário`, você pode ter acesso à localização da Clínica e seu horário de funcionamento
-- A qualquer momento o usuário pode cancelar a seção ao escrever "sair"
-- A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou derivados
+- Inicie a conversa com a Aurora com "oi" ou palavras/frases semelhantes;
+- Selecione o serviço desejado `Agendar Consulta` `Buscar Consulta` `Cancelar Consulta` `Localização e Horário`
+    - Ao selecionar `Agendar Consulta`, você pode agendar uma consulta. Nesta intent será solicitada Seu Nome; E-mail; Telefone; Nome do Pet; Espécie do Pet.
+    - Ao selecionar `Buscar Consulta`, você pode buscar uma consulta existente. Nesta intent será solicitada Seu Nome; E-mail; Nome do Pet. 
+    - Ao selecionar `Cancelar Consulta`, você pode cancelar uma consulta existente. Nesta intent será solicitada Seu Nome; ;E-mail; Nome do Pet.
+    - Ao selecionar `Localização e Horário`, você pode ter acesso à localização da Clínica e seu horário de funcionamento.
+- A qualquer momento o usuário pode cancelar a seção ao escrever "sair".
+- A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou frases semelhantes.
 
 ## 🚀 Como Utilizar o Código
 
@@ -87,8 +87,10 @@
     - Crie uma função lambda e adicione o código
     - Import o bot no Amazon Lex
 
-5. Slack
-
+5. Ações na Plataforma Slack
+    - Crie um aplicativo de mensagem do Slack
+    - Integre o aplicativo do Slack ao bot do Amazon Lex
+    - Teste a integração iniciando uma conversa com seu bot do Amazon Lex. Você envia mensagens com o aplicativo do Slack e testa em uma janela do navegador.
 
 ## 📂 Estrutura do Projeto
 ```
@@ -121,9 +123,10 @@
 
 ## 🏗️ Arquitetura do Projeto
 
-<div style="text-align: center;">
-    <img src="assets/sprint6-7.jpg" alt="Imagem|Diagrama" width="80%">
-</div>
+<p align="center">
+  <img src="assets/sprint6-7.jpg" alt="Imagem|Diagrama" width="80%">
+</p>
+
 
 
 ## 🛠️ Dificuldades
