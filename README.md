@@ -37,15 +37,17 @@
     - Pode enviar respostas em áudio utilizando o endpoint /v1/tts.
 
 ## :robot: Como Utilizar o Chatbot
-    - Acesse o link: :link: [Chatbot Aurora](https://www.dicionarioinformal.com.br/xeretar/);
-    - Inicie a conversa com a Aurora com "oi" ou palavras semelhantes;
-    - Selecione o serviço desejado (`Agendar Consulta` `Buscar Consulta` `Cancelar Consulta` `Localização e Horário`);
-        - Ao selecionar `Agendar Consulta`, você pode agendar uma consulta. Nesta intent será solicitada `Seu Nome` `E-mail` `Telefone` `Nome do Pet` `Espécie do Pet`
-        - Ao selecionar `Buscar Consulta`, você pode buscar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
-        - Ao selecionar `Cancelar Consulta`, você pode cancelar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
-        - Ao selecionar `Localização e Horário`, você pode ter acesso à localização da Clínica e seu horário de funcionamento
-    - A qualquer momento o usuário pode cancelar a seção ao escrever "sair"
-    - A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou derivados
+
+- Acesse o link: :link: [Chatbot Aurora](https://www.dicionarioinformal.com.br/xeretar/);
+- Inicie a conversa com a Aurora com "oi" ou palavras semelhantes;
+- Selecione o serviço desejado (`Agendar Consulta` `Buscar Consulta` `Cancelar Consulta` `Localização e Horário`);
+    - Ao selecionar `Agendar Consulta`, você pode agendar uma consulta. Nesta intent será solicitada `Seu Nome` `E-mail` `Telefone` `Nome do Pet` `Espécie do Pet`
+    - Ao selecionar `Buscar Consulta`, você pode buscar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
+    - Ao selecionar `Cancelar Consulta`, você pode cancelar uma consulta existente. Nesta intent será solicitada `Seu Nome` `E-mail` `Nome do Pet` 
+    - Ao selecionar `Localização e Horário`, você pode ter acesso à localização da Clínica e seu horário de funcionamento
+- A qualquer momento o usuário pode cancelar a seção ao escrever "sair"
+- A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou derivados
+
 ## 🚀 Como Utilizar o Código
 
 1. Pré-requisitos:
