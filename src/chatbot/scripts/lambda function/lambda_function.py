@@ -131,6 +131,12 @@ def lambda_handler(event, context):
                 cursor.execute(query, (data['email'],))
                 appointments = cursor.fetchall()
                 print("Resultados da consulta:", appointments)
+            if not appointments:
+                print("Nenhuma consulta encontrada para o email:", data['email'])
+                return {
+                    'statusCode': 404,
+                    'body': json.dumps("Nenhuma consulta encontrada para o email fornecido.")
+                }
     
             connection.commit()
             print("Consulta realizada com sucesso")
