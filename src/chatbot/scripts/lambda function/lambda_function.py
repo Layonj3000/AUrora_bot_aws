@@ -229,6 +229,37 @@ def lambda_handler(event, context):
             pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
             return re.match(pattern, email) is not None
 
+        if intent_name == 'AgendarConsulta':
+            
+            if event['invocationSource'] == 'FulfillmentCodeHook':
+                data = {
+                    'nome': slots['nome']['value']['interpretedValue'],
+                    'celular': slots['celular']['value']['interpretedValue'],
+                    'nomeAnimal': slots['nomeAnimal']['value']['interpretedValue'],
+                    'email': slots['email']['value']['originalValue'],
+                    'especie': slots['especie']['value']['interpretedValue'],
+                    'data': slots['data']['value']['interpretedValue'],
+                    'horario': slots['horario']['value']['interpretedValue']
+                }
+                print("Preparando para inserir no banco de dados")
+                
+                email_novo = remove_mailto(data['email'])
+                if is_valid_email(email_novo):
+                    print("Email validado:", email_novo)
+                    data['email'] = email_novo
+                else:
+                    print("Email inválido:", email_novo)
+
+                    return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f' O e-mail digitado não é válido. Insira um e-mail válido.')
+                    
+                response = insert_into_db(data)
+                if response['statusCode'] == 200:
+                    return close(event, 'Fulfilled', 'Consulta marcada com sucesso')
+                else:
+                    return close(event, 'Failed', 'Erro ao inserir os dados no banco de dados.')
+            else:
+                return delegate(event)
+            
     except Exception as e:
         print(f"Erro geral no Lambda: {str(e)}")
         return close(event, 'Failed', f"Erro ao processar a intenção: {str(e)}")
