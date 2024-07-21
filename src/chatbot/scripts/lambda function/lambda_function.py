@@ -81,6 +81,22 @@ def lambda_handler(event, context):
                 )
                 '''
                 cursor.execute(pet_query, (data['email'], data['nomeAnimal'], data['especie'], data['email'], data['nomeAnimal'], data['especie']))
+                # Obter o ID do pet
+                cursor.execute('SELECT pet_id FROM pets WHERE customer_email = %s AND name_pet = %s AND species = %s', 
+                               (data['email'], data['nomeAnimal'], data['especie']))
+                pet_id = cursor.fetchone()[0]
+
+                # Inserir na tabela appointments, se não existir
+                appointment_query = '''
+                INSERT INTO appointments (pet_id, customer_email, appointment_date) 
+                SELECT %s, %s, %s 
+                FROM DUAL 
+                WHERE NOT EXISTS (
+                    SELECT * FROM appointments WHERE pet_id = %s AND customer_email = %s AND appointment_date = %s
+                )
+                '''
+                appointment_datetime = f"{data['data']} {data['horario']}"
+                cursor.execute(appointment_query, (pet_id, data['email'], appointment_datetime, pet_id, data['email'], appointment_datetime))
 
     return {
             'statusCode': 200,
