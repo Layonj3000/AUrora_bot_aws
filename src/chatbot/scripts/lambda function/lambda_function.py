@@ -71,7 +71,17 @@ def lambda_handler(event, context):
                 ON DUPLICATE KEY UPDATE first_name=%s, phone=%s
                 '''
                 cursor.execute(customer_query, (data['email'], data['nome'], data['celular'], data['nome'], data['celular']))
-        
+            # Inserir na tabela pets, se não existir
+                pet_query = '''
+                INSERT INTO pets (customer_email, name_pet, species) 
+                SELECT %s, %s, %s 
+                FROM DUAL 
+                WHERE NOT EXISTS (
+                    SELECT * FROM pets WHERE customer_email = %s AND name_pet = %s AND species = %s
+                )
+                '''
+                cursor.execute(pet_query, (data['email'], data['nomeAnimal'], data['especie'], data['email'], data['nomeAnimal'], data['especie']))
+
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
