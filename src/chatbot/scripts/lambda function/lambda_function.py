@@ -31,6 +31,17 @@ def lambda_handler(event, context):
             }]
         }
     
+    def delegate(intent_request):
+        print("delegate called")
+        return {
+            'sessionState': {
+                'dialogAction': {
+                    'type': 'Delegate'
+                },
+                'intent': intent_request['sessionState']['intent']
+            }
+        }
+    
     return {
             'statusCode': 200,
             'body': json.dumps("Hello from Lambda")
