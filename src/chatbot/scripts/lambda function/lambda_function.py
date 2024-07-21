@@ -190,6 +190,16 @@ def lambda_handler(event, context):
                 cursor.execute(query, (data['email'], data['pet_id'], data['appointment_id']))
 
             connection.commit()
+            if cursor.rowcount > 0:
+                return {
+                    'statusCode': 200,
+                    'body': json.dumps("Consulta cancelada com sucesso")
+                }
+            else:
+                return {
+                    'statusCode': 404,
+                    'body': json.dumps("Consulta não encontrada")
+                }
 
         except pymysql.MySQLError as e:
             print(f"Erro ao cancelar consulta no banco de dados: {str(e)}")
