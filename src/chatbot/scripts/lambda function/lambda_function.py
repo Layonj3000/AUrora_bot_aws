@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             }
         }
     
-        def close(intent_request, fulfillment_state, message):
+    def close(intent_request, fulfillment_state, message):
         print("close called with message:", message)
         return {
             'sessionState': {
