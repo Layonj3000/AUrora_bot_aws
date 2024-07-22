@@ -33,20 +33,22 @@ def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message)
         }]
     }
 
+def delegate(intent_request):
+    print("delegate called")
+    return {
+        'sessionState': {
+            'dialogAction': {
+                'type': 'Delegate'
+            },
+            'intent': intent_request['sessionState']['intent']
+        }
+    }
+
 def lambda_handler(event, context):
 
 
     
-    def delegate(intent_request):
-        print("delegate called")
-        return {
-            'sessionState': {
-                'dialogAction': {
-                    'type': 'Delegate'
-                },
-                'intent': intent_request['sessionState']['intent']
-            }
-        }
+    
     
     def close(intent_request, fulfillment_state, message):
         print("close called with message:", message)
