@@ -101,21 +101,6 @@
     cd sprints-6-7-pb-aws-abril
     ```
 3. Para rodar:
-
-    - Instale as bibliotecas necessárias:
-
-    <br>
-    
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-    - Instale as dependências necessárias:
-    <br>
-
-    ```bash
-    pip install boto3 flask
-    ```
     - Configure a AWS CLI com suas credenciais
     - Adicione um arquivo .env conforme o .env.example
 
@@ -153,8 +138,6 @@ project-root/
 │       │   │       └── lambda_function.py    # Código da função Lambda
 │       │   └── setup_aurora_bd.py            # Script Python para configurar o banco de dados Aurora, incluindo a criação de tabelas
 │       └── .env.example                      # Exemplo de arquivo de configuração .env, fornecendo um template para definir variáveis de ambiente necessárias para o projeto
-│
-├── requirements.txt                          # Lista de dependências do projeto para instalação via pip
 └── README.md                                 # Documentação do projeto
 
 
