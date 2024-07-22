@@ -59,31 +59,39 @@
 
 ## :robot: Como Utilizar o Chatbot
 
-- Acesse o link: :link: [Chatbot Aurora](https://www.dicionarioinformal.com.br/xeretar/);
+- Acesse o link de convite para o chatbot: :link: [Chatbot Aurora](https://join.slack.com/t/compassuolgrupo/shared_invite/zt-2mzx5k4fr-RCXRqR2PkQ5Kij_xtz3YSw);
 
-  
+
+- Você será direcionado para a página do Slack;
+
+
+- Utilize seu endereço de e-mail para acessar o workspace;
+
+
 - Inicie a conversa com a Aurora com "oi" ou palavras/frases semelhantes;
 
   
-- Selecione o serviço desejado `Agendar Consulta` `Buscar Consulta` `Cancelar Consulta` `Localização e Horário`<br>
+- Selecione o serviço desejado: `Agendar Consulta` | `Buscar Consulta` | `Cancelar Consulta` | `Localização e Horário`<br>
 
 
-    -  <p align="justify"> Ao selecionar <code> Agendar Consulta</code>, você pode agendar uma consulta. Nesta intent será solicitada Seu Nome; E-mail; Telefone; Nome do Pet; Espécie do Pet. </p>
-
-    
-    -  <p align="justify"> Ao selecionar <code>Buscar Consulta</code>, você pode buscar uma consulta existente. Nesta intent será solicitada Seu Nome; E-mail; Nome do Pet. </p>
+    -  <p align="justify"> Ao selecionar <code> Agendar Consulta</code>, você pode agendar uma consulta. Nesta intent será solicitada Seu Nome; E-mail; Telefone; Nome do Pet; Espécie do Pet; Data da Consulta; Horário da Consulta. </p>
+        - Obs. Para a espécie de animais, serão aceitas variações de: Gato, cachorro, ramster e coelho. 
 
     
-    - <p align="justify"> Ao selecionar <code>Cancelar Consulta</code>, você pode cancelar uma consulta existente. Nesta intent será solicitada Seu Nome; ;E-mail; Nome do Pet.
+    -  <p align="justify"> Ao selecionar <code>Buscar Consulta</code>, você pode buscar uma consulta existente. Nesta intent será solicitada o seu E-mail;</p>
+        - Obs. Nesta opção será possível obter o id do pet e o id da consulta.
+
+    
+    - <p align="justify"> Ao selecionar <code>Cancelar Consulta</code>, você pode cancelar uma consulta existente. Nesta intent será solicitada E-mail; id do pet e id da consulta.
 
     
     - Ao selecionar `Localização e Horário`, você pode ter acesso à localização da Clínica e seu horário de funcionamento.
 
     
-- A qualquer momento o usuário pode cancelar a seção ao escrever "sair".
+- A qualquer momento o usuário pode cancelar a seção ao escrever "sair" ou frases/palavras semelhantes.
 
 
-- A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou frases semelhantes.
+- A qualquer momento o usuário pode ver novamente os serviços disponíveis do menu ao escrever "menu" ou palavras/frases semelhantes.
 
 
 ## 🚀 Como Utilizar o Código
