@@ -182,7 +182,7 @@ project-root/
 
 ## 👥 Autores
 
-**Gabriel Venâncio de Avelar**
+**Gabriel Venancio de Avelar**
 - GitHub: https://github.com/GabrielAvelarbr
 
 **Layon José Pedrosa Dos Reis**
