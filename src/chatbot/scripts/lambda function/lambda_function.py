@@ -137,6 +137,12 @@ def close(intent_request, fulfillment_state, message):
             }
         ]
     }
+
+def remove_mailto(text):
+    pattern = r'<mailto:(.*?\|)(.*?)>'
+    result = re.sub(pattern, r'\2', text)
+    return result
+
 def lambda_handler(event, context):
 
     
@@ -147,11 +153,6 @@ def lambda_handler(event, context):
         print("Intent name:", intent_name)
         print("Slots:", json.dumps(slots))
 
-        def remove_mailto(text):
-            pattern = r'<mailto:(.*?\|)(.*?)>'
-            result = re.sub(pattern, r'\2', text)
-            return result
-        
         def is_valid_email(email):
             pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
             return re.match(pattern, email) is not None
