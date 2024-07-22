@@ -1,8 +1,9 @@
 import json
 import re
-import pymysql
 
-# Configurações do banco de dados
+import pymysql
+from insert_into_db import insert_into_db
+
 db_config = {
     'host': 'HOST',
     'user': 'USER',
@@ -12,7 +13,6 @@ db_config = {
 
 def lambda_handler(event, context):
 
-    # Função para solicitar um slot específico ao usuário
     def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
         print(f"Elicit slot {slot_to_elicit} with message: {message}")
         return {
@@ -32,7 +32,6 @@ def lambda_handler(event, context):
             }]
         }
     
-    # Função para delegar o controle de volta ao Lex
     def delegate(intent_request):
         print("delegate called")
         return {
@@ -44,7 +43,6 @@ def lambda_handler(event, context):
             }
         }
     
-    # Função para fechar o diálogo com o usuário
     def close(intent_request, fulfillment_state, message):
         print("close called with message:", message)
         return {
@@ -62,66 +60,8 @@ def lambda_handler(event, context):
                 'content': message
             }]
         }
+    
 
-    # Função para inserir dados no banco de dados
-    def insert_into_db(data):
-        print("insert_into_db with data:", data)
-        try:
-            connection = pymysql.connect(**db_config)
-            with connection.cursor() as cursor:
-                # Inserir ou atualizar registro na tabela customers
-                customer_query = '''
-                INSERT INTO customers (email, first_name, phone) 
-                VALUES (%s, %s, %s) 
-                ON DUPLICATE KEY UPDATE first_name=%s, phone=%s
-                '''
-                cursor.execute(customer_query, (data['email'], data['nome'], data['celular'], data['nome'], data['celular']))
-                
-                # Inserir na tabela pets, se não existir
-                pet_query = '''
-                INSERT INTO pets (customer_email, name_pet, species) 
-                SELECT %s, %s, %s 
-                FROM DUAL 
-                WHERE NOT EXISTS (
-                    SELECT * FROM pets WHERE customer_email = %s AND name_pet = %s AND species = %s
-                )
-                '''
-                cursor.execute(pet_query, (data['email'], data['nomeAnimal'], data['especie'], data['email'], data['nomeAnimal'], data['especie']))
-                
-                # Obter o ID do pet
-                cursor.execute('SELECT pet_id FROM pets WHERE customer_email = %s AND name_pet = %s AND species = %s', 
-                               (data['email'], data['nomeAnimal'], data['especie']))
-                pet_id = cursor.fetchone()[0]
-
-                # Inserir na tabela appointments, se não existir
-                appointment_query = '''
-                INSERT INTO appointments (pet_id, customer_email, appointment_date) 
-                SELECT %s, %s, %s 
-                FROM DUAL 
-                WHERE NOT EXISTS (
-                    SELECT * FROM appointments WHERE pet_id = %s AND customer_email = %s AND appointment_date = %s
-                )
-                '''
-                appointment_datetime = f"{data['data']} {data['horario']}"
-                cursor.execute(appointment_query, (pet_id, data['email'], appointment_datetime, pet_id, data['email'], appointment_datetime))
-
-            connection.commit()
-
-        except pymysql.MySQLError as e:
-            print(f"Erro ao inserir no banco de dados: {str(e)}")
-            return {
-                'statusCode': 500,
-                'body': json.dumps(f"Erro ao inserir no banco de dados: {str(e)}")
-            }
-        finally:
-            connection.close()
-        print("inserido")
-        return {
-            'statusCode': 200,
-            'body': json.dumps("Dados inseridos com sucesso")
-        }
-
-    # Função para buscar consultas no banco de dados
     def fetch_appointments(data):
         print("fetch_appointments with data:", data)
         try:
@@ -147,7 +87,7 @@ def lambda_handler(event, context):
             connection.commit()
             print("Consulta realizada com sucesso")
 
-            # Converter datetime para string no formato brasileiro
+             # Converter datetime para string no formato brasileiro
             def format_datetime_br(datetime_str):
                 from datetime import datetime
                 dt = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
@@ -178,7 +118,7 @@ def lambda_handler(event, context):
                 connection.close()
                 print("Conexão fechada")
 
-    # Função para cancelar uma consulta no banco de dados
+
     def cancel_appointment(data):
         print("cancel_appointment with data:", data)
         print(f"Email: {data['email']}, Pet ID: {data['pet_id']}, Appointment ID: {data['appointment_id']}")
@@ -215,25 +155,27 @@ def lambda_handler(event, context):
             }
         finally:
             connection.close()
-
+    
+    
+    
+    
     try:
         intent_name = event['sessionState']['intent']['name']
         slots = event['sessionState']['intent']['slots']
         print("Intent name:", intent_name)
         print("Slots:", json.dumps(slots))
 
-        # Função para remover prefixo 'mailto:' dos emails
         def remove_mailto(text):
             pattern = r'<mailto:(.*?\|)(.*?)>'
             result = re.sub(pattern, r'\2', text)
             return result
         
-        # Função para validar formato de email
         def is_valid_email(email):
             pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
             return re.match(pattern, email) is not None
 
         if intent_name == 'AgendarConsulta':
+            
             if event['invocationSource'] == 'FulfillmentCodeHook':
                 data = {
                     'nome': slots['nome']['value']['interpretedValue'],
@@ -244,53 +186,87 @@ def lambda_handler(event, context):
                     'data': slots['data']['value']['interpretedValue'],
                     'horario': slots['horario']['value']['interpretedValue']
                 }
-                data['email'] = remove_mailto(data['email'])
+                print("Preparando para inserir no banco de dados")
                 
-                if not is_valid_email(data['email']):
-                    return close(event, 'Fulfilled', 'O email fornecido não é válido. Tente novamente.')
+                email_novo = remove_mailto(data['email'])
+                if is_valid_email(email_novo):
+                    print("Email validado:", email_novo)
+                    data['email'] = email_novo
+                else:
+                    print("Email inválido:", email_novo)
 
+                    return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f' O e-mail digitado não é válido. Insira um e-mail válido.')
+                    
                 response = insert_into_db(data)
                 if response['statusCode'] == 200:
-                    return close(event, 'Fulfilled', 'Consulta agendada com sucesso.')
+                    return close(event, 'Fulfilled', 'Consulta marcada com sucesso')
                 else:
-                    return close(event, 'Fulfilled', 'Houve um problema ao agendar a consulta. Tente novamente.')
-
+                    return close(event, 'Failed', 'Erro ao inserir os dados no banco de dados.')
+            else:
+                return delegate(event)
+            
         if intent_name == 'BuscarConsulta':
+   
             if event['invocationSource'] == 'FulfillmentCodeHook':
                 data = {
-                    'email': slots['email']['value']['originalValue']
+                    'email': slots['email']['value']['interpretedValue']
                 }
-                data['email'] = remove_mailto(data['email'])
+                
+                email_novo = remove_mailto(data['email'])
+                
+                if is_valid_email(email_novo):
+                    print("Email validado:", email_novo)
+                    data['email'] = email_novo
+                else:
+                    print("Email inválido:", email_novo)
 
-                if not is_valid_email(data['email']):
-                    return close(event, 'Fulfilled', 'O email fornecido não é válido. Tente novamente.')
-
+                    return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f'Insira um email válido.')
+                
                 response = fetch_appointments(data)
                 if response['statusCode'] == 200:
-                    return close(event, 'Fulfilled', response['body'])
+                    message = json.loads(response['body'])
+                    return close(event, 'Fulfilled', message)
+                elif response['statusCode'] == 404:
+                    return close(event, 'Failed', 'Nenhuma consulta encontrada para o email fornecido.')
                 else:
-                    return close(event, 'Fulfilled', 'Não foi possível buscar as consultas. Tente novamente.')
+                    return close(event, 'Failed', 'Erro ao buscar as consultas no banco de dados.')
 
+            else:
+                return delegate(event)
         if intent_name == 'CancelarConsulta':
-            if event['invocationSource'] == 'FulfillmentCodeHook':
-                data = {
-                    'email': slots['email']['value']['originalValue'],
-                    'pet_id': slots['petId']['value']['interpretedValue'],
-                    'appointment_id': slots['appointmentId']['value']['interpretedValue']
-                }
-                data['email'] = remove_mailto(data['email'])
+                print("CancelarConsulta")
 
-                if not is_valid_email(data['email']):
-                    return close(event, 'Fulfilled', 'O email fornecido não é válido. Tente novamente.')
-
-                response = cancel_appointment(data)
-                if response['statusCode'] == 200:
-                    return close(event, 'Fulfilled', 'Consulta cancelada com sucesso.')
+                if event['invocationSource'] == 'FulfillmentCodeHook':
+                    data = {
+                        'email': slots['email']['value']['interpretedValue'],
+                        'pet_id': slots['pet_id']['value']['interpretedValue'],
+                        'appointment_id': slots['appointment_id']['value']['interpretedValue']
+                    }
+                    
+                    email_novo = remove_mailto(data['email'])
+                    
+                    if is_valid_email(email_novo):
+                        print("Email validado:", email_novo)
+                        data['email'] = email_novo
+                    else:
+                        print("Email inválido:", email_novo)
+                        return elicit_slot(event['sessionState']['sessionAttributes'], intent_name, slots, 'email', f'Insira um email válido.')
+                        
+                    
+                    response = cancel_appointment(data)
+                    if response['statusCode'] == 200:
+                        return close(event, 'Fulfilled', 'Consulta cancelada com sucesso')
+                    elif response['statusCode'] == 404:
+                        return close(event, 'Failed', 'Consulta não encontrada.')
+                    else:
+                        return close(event, 'Failed', 'Erro ao cancelar a consulta no banco de dados.')
                 else:
-                    return close(event, 'Fulfilled', 'Não foi possível cancelar a consulta. Tente novamente.')
-
-        return delegate(event)
-
+                    return delegate(event)
+                
+        return close(event, 'Failed', 'Erro ao processar a intenção.')
+                
     except Exception as e:
-        print(f"Erro no processamento da requisição: {str(e)}")
-        return close(event, 'Fulfilled', f"Houve um erro no processamento da requisição: {str(e)}")
+        print(f"Erro geral no Lambda: {str(e)}")
+        return close(event, 'Failed', f"Erro ao processar a intenção: {str(e)}")
+    
+    
