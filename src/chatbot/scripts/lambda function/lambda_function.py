@@ -143,19 +143,17 @@ def remove_mailto(text):
     result = re.sub(pattern, r'\2', text)
     return result
 
+def is_valid_email(email):
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(pattern, email) is not None
+
 def lambda_handler(event, context):
 
-    
-    
     try:
         intent_name = event['sessionState']['intent']['name']
         slots = event['sessionState']['intent']['slots']
         print("Intent name:", intent_name)
         print("Slots:", json.dumps(slots))
-
-        def is_valid_email(email):
-            pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-            return re.match(pattern, email) is not None
 
         if intent_name == 'AgendarConsulta':
             
