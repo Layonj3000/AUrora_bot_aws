@@ -62,10 +62,7 @@ def close(intent_request, fulfillment_state, message):
             }]
         }
     
-def lambda_handler(event, context):
-
-    
-    
+def lambda_handler(event, context):  
     try:
         intent_name = event['sessionState']['intent']['name']
         slots = event['sessionState']['intent']['slots']
@@ -140,9 +137,7 @@ def lambda_handler(event, context):
 
             else:
                 return delegate(event)
-        if intent_name == 'CancelarConsulta':
-                print("CancelarConsulta")
-
+        if intent_name == 'DesmarcarConsulta':
                 if event['invocationSource'] == 'FulfillmentCodeHook':
                     data = {
                         'email': slots['email']['value']['interpretedValue'],
