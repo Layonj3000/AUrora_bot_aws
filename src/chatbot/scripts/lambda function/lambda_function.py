@@ -43,7 +43,6 @@ def generate_audio(phrase):
     audio_url = data['url_to_audio']
     return audio_url
 
-
 def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
     print(f"Elicit slot {slot_to_elicit} with message: {message}")
     return {
@@ -132,7 +131,6 @@ def lambda_handler(event, context):
         intent_name = event['sessionState']['intent']['name']
         slots = event['sessionState']['intent']['slots']
 
-
         if intent_name == 'AgendarConsulta':
             
             if event['invocationSource'] == 'FulfillmentCodeHook':
@@ -146,7 +144,6 @@ def lambda_handler(event, context):
                     'horario': slots['horario']['value']['interpretedValue']
                 }
   
-                
                 email_novo = remove_mailto(data['email'])
                 if is_valid_email(email_novo):
                     data['email'] = email_novo
@@ -193,7 +190,6 @@ def lambda_handler(event, context):
                 return delegate(event)
         if intent_name == 'DesmarcarConsulta':
 
-
                 if event['invocationSource'] == 'FulfillmentCodeHook':
                     data = {
                         'email': slots['email']['value']['interpretedValue'],
@@ -210,7 +206,6 @@ def lambda_handler(event, context):
                         
                     response = cancel_appointment(data)
                     
-
                     if response['statusCode'] == 200:
                         audio_url = generate_audio('Consulta cancelada com sucesso!')
                         return close_with_message(event, 'Fulfilled', 'Consulta cancelada com sucesso! \n', audio_url)
@@ -222,11 +217,9 @@ def lambda_handler(event, context):
                 else:
                     return delegate(event)
              
-             
         if intent_name == 'Localizacao':
             audio_url = generate_audio('Avenida Dálmata, nº 101, Bairro Zeca Urubu, Cidade de Garfield!')
             return close(event, 'Fulfilled', audio_url)
-        
                 
         return close(event, 'Failed', 'Erro ao processar a intenção.')
                 
