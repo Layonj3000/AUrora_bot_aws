@@ -92,7 +92,7 @@ project-root/
 ## 🏗️ Project Architecture
 
 <p align="center">
-  <img src="assets/architecture.jpg" alt="Image|Diagram" width="80%">
+  <img src="assets/architecture.png" alt="Image|Diagram" width="80%">
 </p>
 
 ## 🛠️ Challenges
